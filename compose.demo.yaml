@@ -1,0 +1,22 @@
+services:
+
+  backend:
+    build: "."
+    environment:
+      DB_NAME: "${DB_NAME}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_IP: "database"
+    ports:
+      - "${HOST_PORT_BACKEND}:8080"
+    volumes:
+      - ./exports:/app/exports # this creates the exports folder, removing the folder from the host causes issues, so should not be done
+
+  database:
+    image: "postgres:15.2"
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    ports:
+      - "${HOST_PORT_DB}:5432" # expose for demo / testing purposes

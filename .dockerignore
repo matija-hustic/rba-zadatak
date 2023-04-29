@@ -8,8 +8,8 @@ target/
 exports/
 
 # Environment files
-# .env
-# demo.env
+.env
+demo.env
 
 ### STS ###
 .apt_generated
@@ -37,4 +37,4 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-# .vscode/
+.vscode/
