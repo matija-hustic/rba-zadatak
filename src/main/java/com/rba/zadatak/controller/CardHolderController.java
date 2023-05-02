@@ -34,8 +34,8 @@ public class CardHolderController {
   @Autowired
   CardHolderExportRepository cardHolderExportRepository;
 
-	@PostMapping("/card-holders")
-	public ResponseEntity<CardHolder> createCardHolder(@RequestBody CardHolder newCardHolder) {
+  @PostMapping("/card-holders")
+  public ResponseEntity<CardHolder> createCardHolder(@RequestBody CardHolder newCardHolder) {
     // Card holder active by default
     if (newCardHolder.active == null) {
       newCardHolder.active = true;
@@ -66,10 +66,10 @@ public class CardHolderController {
 
     cardHolder.id = null;
     return new ResponseEntity<>(cardHolder, HttpStatus.CREATED);
-	}
+  }
 
-	@PutMapping("/card-holders/{oib}")
-	public ResponseEntity<CardHolder> updateCardHolder(@PathVariable String oib, @RequestBody CardHolder newCardHolder) {
+  @PutMapping("/card-holders/{oib}")
+  public ResponseEntity<CardHolder> updateCardHolder(@PathVariable String oib, @RequestBody CardHolder newCardHolder) {
     // Card holder active by default
     if (newCardHolder.active == null) {
       newCardHolder.active = true;
@@ -103,10 +103,10 @@ public class CardHolderController {
 
     cardHolder.id = null;
     return new ResponseEntity<>(cardHolder, HttpStatus.OK);
-	}
+  }
 
-	@DeleteMapping("/card-holders/{oib}")
-	public ResponseEntity<HttpStatus> deleteCardHolder(@PathVariable String oib) {
+  @DeleteMapping("/card-holders/{oib}")
+  public ResponseEntity<HttpStatus> deleteCardHolder(@PathVariable String oib) {
     // Card holder must exist
     Optional<CardHolder> cardHolder = cardHolderRepository.findByOib(oib);
     if (cardHolder.isEmpty()) {
@@ -124,7 +124,7 @@ public class CardHolderController {
     cardHolderRepository.deleteById(cardHolder.get().id);
 
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+  }
 
   @GetMapping("/card-holders/{oib}")
   public ResponseEntity<CardHolder> getCardHolder(@PathVariable String oib) {
@@ -138,8 +138,8 @@ public class CardHolderController {
     return new ResponseEntity<>(cardHolder.get(), HttpStatus.OK);
   }
 
-	@PostMapping("/card-holders/{oib}/exports")
-	public ResponseEntity<CardHolderExport> createCardHolderExport(@PathVariable String oib) {
+  @PostMapping("/card-holders/{oib}/exports")
+  public ResponseEntity<CardHolderExport> createCardHolderExport(@PathVariable String oib) {
     // Card holder must exist
     Optional<CardHolder> cardHolder = cardHolderRepository.findByOib(oib);
     if (cardHolder.isEmpty()) {

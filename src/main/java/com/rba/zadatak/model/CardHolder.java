@@ -5,22 +5,22 @@ import jakarta.persistence.*;
 @Entity
 public class CardHolder {
 
-	@Id
-	@GeneratedValue
-	public Long id;
+  @Id
+  @GeneratedValue
+  public Long id;
 
-	@Column
-	public String firstName;
+  @Column
+  public String firstName;
 
-	@Column
-	public String lastName;
+  @Column
+  public String lastName;
 
-	@Column
-	public String oib;
+  @Column
+  public String oib;
 
-	@Column
-	public String cardStatus;
+  @Column
+  public String cardStatus;
 
-	@Column
-	public Boolean active;
+  @Column
+  public Boolean active;
 }

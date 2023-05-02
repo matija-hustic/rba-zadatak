@@ -4,9 +4,9 @@ public class CardHolderFile {
 
   public String firstName;
 
-	public String lastName;
+  public String lastName;
 
-	public String oib;
+  public String oib;
 
-	public String cardStatus;
+  public String cardStatus;
 }
