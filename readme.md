@@ -1,6 +1,14 @@
 # Zadatak
 
-## Opis problema
+Poveznice
+- [Opis problema](#opis-problema-vrh)
+- [Poslovna logika](#poslovna-logika-vrh)
+- [Rjesenje](#rjesenje-vrh)
+- [Development](#development-vrh)
+- [Tehnicke biljeske](#tehnicke-biljeske-vrh)
+- [Radno vrijeme](#radno-vrijeme-vrh)
+
+## Opis problema [[vrh]](#zadatak)
 
 Banka izdaje fizičkim osobama kreditne kartice. Osobe za to apliciraju banci. Za potrebe te evidencije treba napraviti mini-aplikaciju kojom će se evidentirati osoba(O) ili više njih predstavljenih Imenom, Prezimenom, OIB-om i Statusom za koje se treba izraditi kartica. Tip kartice nije bitan, već je samo jedan, tako da o tome ne trebaš razmišljati.<br>
 Osobe se moraju zapisati permanentno,  a način izaberi sam po volji. Preferira se baza podataka (bilo koja, može i H2) ili datoteka.
@@ -32,7 +40,7 @@ Jezik je JAVA, a poželjno je korištenje frameworka, tipa spring boot i sl.
 Štogod misliš da bi trebalo napraviti kao dodanu vrijednost, slobodno napravi, samo nam onda to napiši u mailu kad završiš, da možemo pogledati.<br>
 Kad si gotov, možeš to na public GIT zakvačit pa pošalji link.
 
-## Poslovna logika
+## Poslovna logika [[vrh]](#zadatak)
 
 Iz opisa problema naziru se ugrubo dva poslovna procesa.
 - **Vodjenje evidencije** o osobama (korisnicima kartica), sto podrazumijeva unos i eventualnu naknadnu doradu podataka o osobama. Pri tome svakoj osobi osim njenih osnovnih podataka (ime, prezime, oib) pridruzen je podatak o stanju kartice (npr zatrazena, odobrena, dana u izdavanje, izdana, ponistena, ...) i aktivnosti korisnika kartice (`true` ako osoba koristi karticu / `false` ako osoba ne koristi karticu, ali nije zahtjevala brisanje podataka).
@@ -42,7 +50,7 @@ Za evidenciju osoba zelim namijeniti REST resource (na backend serveru) kojem se
 
 Za izvoz podataka o osobama takodjer zelim namijeniti REST resource, na putanji `/card-holders/{oib}/exports`. Stvaranjem tog REST resourcea, stvara se i datoteka za osobu za koju se podaci izvoze. Namjera je da stvorenu datoteku preuzme vanjski sustav (npr za izradu kartica). Iz tog razloga jednom stvorena datoteka vise se ne smatra u nadleznosti aplikacije. Stoga aplikacija ne podrzava izmjenu sadrzaja ili brisanje datoteke, kao ni dohvat njenog sadrzaja. Medjutim, da bi se bilo u mogucnosti utvrditi koje datoteke su stvorene i koja od njih je aktivna, predvidjeno je vodjene evidencije o stvorenim datotekama. Za te potrebe u bazi podataka koristi se tablica `card_holder_export` za vodjenje zapisnika (log) o stvorenim datotekama.
 
-## Rjesenje
+## Rjesenje [[vrh]](#zadatak)
 
 Moj prijedlog rjesenja sastoji se od dvije komponente, **backend servera** razvijenog za OpenJDK (17.0.6) uz Spring Boot (3.0.6), i **baze podataka** PostgreSQL (15.2). Za potrebe demonstracije, komponente su konfigurirane da se pokrenu pomocu Docker Compose (2.17.2) unutar containera za Docker (20.10.24).
 ```sh
@@ -51,10 +59,10 @@ Moj prijedlog rjesenja sastoji se od dvije komponente, **backend servera** razvi
 #   gdje je HOST_PORT_BACKEND postavljen na 8080 u ./demo.env
 # - postgresql baza podataka bit ce dostupna na localhost:${HOST_PORT_DB},
 #   gdje je HOST_PORT_DB postavljen na 5432 u ./demo.env
-docker-compose --file ./compose.demo.yaml --env-file ./demo.env up -d
+docker compose --file ./compose.demo.yaml --env-file ./demo.env up -d
 
 # zaustavljanje rjesenja
-docker-compose --file ./compose.demo.yaml down
+docker compose --file ./compose.demo.yaml down
 ```
 
 Rjesenje je namijenjeno da mu se pristupa putem REST sucelja backend servera. Izravan pristup bazi podataka nije predvidjen, medjutim ipak je omogucen radi lakse provjere funkcioniranja rjesenja. Prema zahtjevima iz zadatka, backend server osim uzvratnih HTTP response poruka na REST sucelju, u odredjenim okolnostima takodjer izvozi podatke u izlazne datoteke na disku (uz prikladno namjesten mapping na Docker container).
@@ -118,7 +126,7 @@ curl -i -X DELETE http://${HOST}/card-holders/12345678901 \
   -H 'Content-Type: application/json'
 ```
 
-## Development
+## Development [[vrh]](#zadatak)
 
 Za razvoj sam koristio sljedece alate
 - Svoj omiljeni code editor, VS Code (1.77.3) s default postavkama na Windows Windows 10 Pro (21H2, 19044.2846)
@@ -136,7 +144,7 @@ docker compose --file ./compose.dev.yaml --env-file ./.env up -d
 docker compose --file ./compose.dev.yaml down
 ```
 
-## Tehnicke biljeske
+## Tehnicke biljeske [[vrh]](#zadatak)
 
 Zamisljeni podatkovni model je kako slijedi
 - osoba (`card_holder`)
@@ -209,7 +217,7 @@ Pri razvoju aplikacije vodio sam se izmedju ostalog sljedecim nacelima
   - for example object ids can be technical (for use in database joins) and business (for use in application logic)
   - instead of the two functions being fulfilled by a single id, it often makes sense to decouple the functions by having separate technical and business ids
   - db ids are usually technical data that should not propagate outside of backend
-  - **TODO** for this reason use different objects on fe-be and be-db interfaces: DTOs and DBO, respectively
+  - **TODO** for this reason use different objects on fe-be and be-db interfaces: DTOs and DBOs, respectively
 - respect rest conventions when defining endpoints
   - https://restfulapi.net/http-methods/
   - https://www.google.com/search?client=firefox-b-d&q=rest+methods
@@ -230,13 +238,16 @@ Glavni dio rjesenja moze biti doradjen na mnogo nacina, a neke od znacajki koje 
 - **TODO** dodati dokumentaciju za REST API pomocu `springdoc-openapi`, https://www.baeldung.com/spring-rest-openapi-documentation
 
 DevSecOps dio takodjer moze biti bolji
+- **TODO** konfigurirati linting, formatting, style enforcement
+- **TODO** konfigurirati dependency analysis (vulnerabilities, licensing)
 - **TODO** pristup REST resourceima pozeljno je ograniciti nekom od metoda autentikacije i autorizacije, npr pomocu cookies (https://auth0.com/docs/manage-users/cookies/spa-authenticate-with-cookies)
 - **TODO** doraditi dockerfile, docker image mogao bi biti manji
 - **TODO** idealno, rjesenje moze biti pokrenuto ne samo na lokalnom, vec i na udaljenom racunalu (https://www.docker.com/blog/how-to-deploy-on-remote-docker-hosts-with-docker-compose/), medjutim takav pristup otezan je potrebom za trajnom pohranom podataka
 - **TODO** idealno, i razvoj se moze raditi na udaljenom racunalu, kako bi se izbjegla lokalna ogranicenja (CPU, RAM, HDD, inet bandwith, ...)
 - **TODO** za slucaj potrebe veceg scalea, moze se koristiti cloud, kubernetes, terraform, helm, gitlab, alati od hashicorp, za potrebe arhitekture mikroservisa mogu biti korisni alati i metode za rad s distribuiranim podatkovnim modelom
+- **TODO** takodjer u slucaju veceg scalea, moze se osposobiti CI/CD alate (gitlab, jenkins, ...)
 
-## Radno vrijeme
+## Radno vrijeme [[vrh]](#zadatak)
 
 |            |         |
 | ---------- | ------- |
